@@ -37,7 +37,7 @@ with DAG(
     extract_articles = HttpOperator(
         task_id='extract_articles',
         http_conn_id='space_news_api',  # You need to add this in Airflow Connections with base_url=https://api.spaceflightnewsapi.net
-        endpoint='v4/articles?limit=1',
+        endpoint='/articles?limit=1',
         method='GET',
         response_filter=lambda response: response.json(),  # parses JSON
     )
