@@ -11,8 +11,8 @@ app = Flask(__name__, static_folder=".", static_url_path="")
 def home():
     return send_from_directory(".", "index.html")
 
-AIRFLOW_BASE_URL = "https://cmc65nche1gf601ltyihy0axm.astronomer.run/dvexhn2z/"
-AIRFLOW_AUTH = ("Kishan Bhati", "piclet1234")  # use your Airflow credentials
+AIRFLOW_BASE_URL = 
+AIRFLOW_AUTH =
 DAG_ID = "nasa_apod_postgres"
 
 # POST /trigger-dag
@@ -53,7 +53,7 @@ def get_latest_article():
         dbname="postgres",
         user="postgres",
         password="postgres",
-        host="database-2.crau4igg6pmn.eu-north-1.rds.amazonaws.com",
+        host="",
         port="5432"
     )
     cur = conn.cursor()
