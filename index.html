@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Space Article ETL</title>
+</head>
+<body>
+  <h2>🚀 Fetch Latest Space Article</h2>
+  <button onclick="startPipeline()">Trigger DAG</button>
+  <div id="loader" style="display:none;">⏳ Running DAG...</div>
+  <div id="article"></div>
+
+  <script>
+   function startPipeline() {
+  document.getElementById("loader").style.display = "block";
+  fetch("/trigger-dag", { method: "POST" })
+    .then(res => res.json())
+    .then(() => {
+      const poll = setInterval(() => {
+        fetch("/dag-status")
+          .then(r => r.json())
+          .then(data => {
+            if (data.state === "success") {
+              clearInterval(poll);
+              document.getElementById("loader").style.display = "none";
+              fetch("/get-latest-article")
+                .then(r => r.json())
+                .then(article => {
+                  document.getElementById("article").innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.summary}</p>
+                    <a href="${article.url}" target="_blank">Read more</a>
+                    <p><small>${article.published_at}</small></p>
+                  `;
+                });
+            }
+          });
+      }, 3000);
+    })
+    .catch(err => {
+      console.error("Trigger failed:", err);
+      document.getElementById("loader").innerText = "Error triggering DAG!";
+    });
+}
+
+  </script>
+</body>
+</html>
